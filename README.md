@@ -16,19 +16,24 @@ The project has the following files and directories:
 
 - `docker-compose.yml`: This file is used to define and run multi-container Docker applications. It specifies the services to run, their configurations, and any dependencies between them.
 
+## Services
+
+### Python FastAPI Server (Port 8000)
+- `GET /` - Returns "Hello World"
+- `POST /tasks` - Add a new task
+- `GET /tasks` - Get all tasks
+
+### Node.js Express Server (Port 8001)
+- `GET /` - Returns "Hello World"
+- `POST /tasks` - Add a new task
+- `GET /tasks` - Get all tasks
+
 ## Getting Started
 
-To run the FastAPI server using Docker, follow these steps:
-
-- Build and start the Docker containers by running the following command:
-
-  ```shell
-  docker compose up
-  ```
-
-  This command will build the Docker image for the FastAPI server and start the containers defined in the `docker-compose.yml` file.
-
-- The FastAPI server should now be running. You can access at port `8000`.
+1. Build and start both servers:
+```bash
+docker compose up
+```
 
 ## API Routes
 
@@ -37,3 +42,35 @@ The FastAPI server provides the following API routes:
 - `POST /tasks`: Adds a task to the task list. The request body should contain the task details.
 
 - `GET /tasks`: Retrieves the task list.
+
+## Migration
+
+The project includes two identical APIs implemented in different technologies to demonstrate migration capabilities:
+
+### Python to Node.js Migration
+1. Data Structure:
+   - Both servers use an in-memory array to store tasks
+   - Task format is identical: simple strings in an array
+
+2. API Compatibility:
+   - Identical endpoints and response formats
+   - Same HTTP methods (GET/POST)
+   - Matching JSON schemas
+
+### Testing Migration
+To verify both servers work identically:
+
+```bash
+# Test Python Server (8000)
+curl -X POST http://localhost:8000/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"text":"New task"}'
+
+curl http://localhost:8000/tasks
+
+# Test Node.js Server (8001)
+curl -X POST http://localhost:8001/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"text":"New task"}'
+
+curl http://localhost:8001/tasks
