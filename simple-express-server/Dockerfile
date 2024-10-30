@@ -2,8 +2,9 @@ FROM node:14
 
 WORKDIR /app
 
-COPY package*.json /app
-RUN yarn install
-EXPOSE 8001
+COPY package*.json ./
+RUN npm install
 
-CMD [ "yarn", "start" ]
+COPY . .
+
+CMD ["npm", "start"]
